@@ -46,10 +46,10 @@ export function HeroCarousel() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
       onKeyDown={(e) => { if (e.key === "ArrowLeft") go(-1); if (e.key === "ArrowRight") go(1); }}
-      onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
+      onTouchStart={(e) => (touch.current = e.touches[0]?.clientX ?? null)}
       onTouchEnd={(e) => {
         if (touch.current === null) return;
-        const dx = e.changedTouches[0].clientX - touch.current;
+        const dx = (e.changedTouches[0]?.clientX ?? touch.current) - touch.current;
         if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
         touch.current = null;
       }}

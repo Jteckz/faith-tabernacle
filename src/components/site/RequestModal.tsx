@@ -24,7 +24,7 @@ export function RequestModalProvider({ children }: { children: ReactNode }) {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+    const data = Object.fromEntries(new FormData(e.currentTarget)) as Partial<Record<"name" | "phone" | "message" | "date" | "email" | "subject", string>>;
     if (!data.name?.trim() || !/^[+\d\s-]{9,}$/.test(data.phone ?? "")) {
       setError("Please enter your name and a valid phone number.");
       return;
@@ -33,7 +33,7 @@ export function RequestModalProvider({ children }: { children: ReactNode }) {
     if (kind === "visit" && !data.date) return setError("Please choose a preferred date.");
     setBusy(true);
     try {
-      await submitForm(kind!, data);
+      await submitForm(kind!, data as Record<string, string>);
       setDone(true);
     } catch {
       setError("Something went wrong. Please try again.");
