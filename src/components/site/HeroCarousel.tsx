@@ -1,17 +1,39 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import { images } from "@/lib/site";
+import { church_info, services } from "@/lib/site";
 import { useRequestModal } from "./RequestModal";
 import { cn } from "@/lib/utils";
 
-type Action = { label: string; kind: "visit" | "prayer" | "about" | "contact"; primary?: boolean };
-// REPLACE: slide text; images come from images.hero in src/lib/site.ts
-const slides: { title: string; sub: string; actions: Action[] }[] = [
-  { title: "Join Our Every Sunday School & Services", sub: "A warm family of faith in Sinza — come grow, learn and worship with us.", actions: [{ label: "Plan to Visit", kind: "visit", primary: true }, { label: "Learn More", kind: "about" }] },
-  { title: "Prayers and Deliverance", sub: "Bring your burdens. We believe in a God who hears, heals and sets free.", actions: [{ label: "Prayer Request", kind: "prayer", primary: true }] },
-  { title: "Praise and Worship", sub: "Lift your voice with us in joyful, Spirit-filled worship every Sunday.", actions: [{ label: "Join Us", kind: "contact", primary: true }] },
-];
+const slides = [
+  { eyebrow: "Join us this Sunday for our", lines: ["Sunday School", "& Services"] },
+  { eyebrow: "Come expectant this Sunday for", lines: ["Prayers &", "Deliverance"] },
+  { eyebrow: "Lift your voice with us in", lines: ["Praise &", "Worship"] },
+] as const;
+
+function ordinal(n: number) {
+  const suffixes = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return `${n}${suffixes[(v - 20) % 10] ?? suffixes[v] ?? suffixes[0]}`;
+}
+
+function upcomingSunday() {
+  const d = new Date();
+  d.setDate(d.getDate() + ((7 - d.getDay()) % 7));
+  return [
+    ordinal(d.getDate()).toUpperCase(),
+    d.toLocaleString("en-US", { month: "long" }).toUpperCase(),
+    String(d.getFullYear()),
+  ];
+}
+
+function clockLabel(value: string) {
+  const match = value.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!match) return value;
+  const [, hour = "", minute = "", meridiem = ""] = match;
+  return `${hour.padStart(2, "0")}:${minute}${meridiem.toUpperCase()}`;
+}
+
+const serviceTimes = services.map((s) => clockLabel(s.time.split("–")[0]?.trim() ?? s.time));
 
 export function HeroCarousel() {
   const [i, setI] = useState(0);
@@ -19,33 +41,33 @@ export function HeroCarousel() {
   const touch = useRef<number | null>(null);
   const openModal = useRequestModal();
   const n = slides.length;
+  const date = useMemo(upcomingSunday, []);
   const go = useCallback((d: number) => setI((p) => (p + d + n) % n), [n]);
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => go(1), 6000);
-    return () => clearInterval(t);
-  }, [paused, go, i]);
+    const t = window.setInterval(() => setI((p) => (p + 1) % n), 6500);
+    return () => window.clearInterval(t);
+  }, [paused, n]);
 
-  const btn = (a: Action) => {
-    const cls = cn(
-      "rounded-full px-7 py-3.5 font-semibold transition hover:-translate-y-0.5",
-      a.primary ? "bg-gold text-gold-foreground hover:shadow-lift" : "border-2 border-deep-foreground/80 text-deep-foreground hover:border-gold hover:text-gold",
-    );
-    if (a.kind === "visit" || a.kind === "prayer") return <button key={a.label} onClick={() => openModal(a.kind as "visit")} className={cls}>{a.label}</button>;
-    return <Link key={a.label} to={a.kind === "about" ? "/about" : "/contact"} className={cls}>{a.label}</Link>;
-  };
+  const ctaCls =
+    "min-w-[9.5rem] rounded-md bg-[#e01b24] px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(0,0,0,0.35)] transition hover:-translate-y-0.5 hover:bg-[#c1141c] sm:px-8 sm:text-base";
+  const arrowCls =
+    "absolute top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/30 bg-white/15 text-white backdrop-blur-md transition hover:bg-white/30 sm:h-12 sm:w-12";
 
   return (
     <section
       aria-roledescription="carousel"
-      aria-label="Highlights"
-      className="relative h-[85vh] min-h-[520px] overflow-hidden bg-deep"
+      aria-label="Church highlights"
+      className="relative h-[calc(100svh-5rem)] min-h-[640px] overflow-hidden bg-deep"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      onKeyDown={(e) => { if (e.key === "ArrowLeft") go(-1); if (e.key === "ArrowRight") go(1); }}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowLeft") go(-1);
+        if (e.key === "ArrowRight") go(1);
+      }}
       onTouchStart={(e) => (touch.current = e.touches[0]?.clientX ?? null)}
       onTouchEnd={(e) => {
         if (touch.current === null) return;
@@ -54,31 +76,113 @@ export function HeroCarousel() {
         touch.current = null;
       }}
     >
-      {slides.map((s, idx) => (
-        <div key={s.title} className={cn("absolute inset-0 transition-opacity duration-1000", idx === i ? "opacity-100" : "pointer-events-none opacity-0")} aria-hidden={idx !== i}>
-          <img src={images.hero[idx]} alt="" width={1920} height={912} loading={idx === 0 ? "eager" : "lazy"} fetchPriority={idx === 0 ? "high" : "auto"} className="hero-img absolute inset-0 h-full w-full object-cover object-right" />
-          <div className="hero-overlay absolute inset-0" />
-          <div className="relative mx-auto flex h-full max-w-7xl items-center px-5 md:px-20">
-            <div className={cn("max-w-2xl transition-all duration-1000", idx === i ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0")}>
-              <span className="mb-5 block h-1 w-16 rounded bg-burgundy" />
-              <h1 className="text-4xl font-bold uppercase leading-[1.05] text-deep-foreground sm:text-5xl lg:text-7xl">{s.title}</h1>
-              <p className="mt-5 max-w-lg text-lg text-deep-foreground/90">{s.sub}</p>
-              <div className="mt-8 flex flex-wrap gap-3">{s.actions.map(btn)}</div>
+      <img
+        src="/image1.svg"
+        alt=""
+        width={1199}
+        height={678}
+        loading="eager"
+        fetchPriority="high"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/10 to-slate-950/65" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.14),transparent_62%)]" />
+
+      <div className="relative z-10 flex h-full items-center justify-center px-6 pb-32 pt-16 sm:px-10 sm:pb-36">
+        <div className="relative w-full max-w-6xl text-center">
+          {slides.map((s, idx) => (
+            <div
+              key={s.lines.join(" ")}
+              aria-hidden={idx !== i}
+              className={cn(
+                "transition-all duration-700",
+                idx === i
+                  ? "relative opacity-100"
+                  : "pointer-events-none absolute inset-0 translate-y-4 opacity-0",
+              )}
+            >
+              <p className="text-[0.7rem] font-bold uppercase tracking-[0.28em] text-white/80 sm:text-sm sm:tracking-[0.38em]">
+                {s.eyebrow}
+              </p>
+              <h1 className="hero-display mt-4 text-white sm:mt-6">
+                {s.lines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </h1>
+              <div className="mt-6 sm:mt-8">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-white/75 sm:text-xs">
+                  Ministering:
+                </p>
+                <p className="mt-1.5 text-sm font-extrabold uppercase tracking-[0.14em] text-white sm:text-lg">
+                  {church_info.pastor}
+                </p>
+              </div>
+              <p className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white/75 sm:text-[0.7rem] xl:hidden">
+                <span>{date.join(" ")}</span>
+                <span aria-hidden="true">•</span>
+                <span>{serviceTimes.join(" · ")}</span>
+              </p>
             </div>
+          ))}
+        </div>
+      </div>
+
+      <p className="sr-only" aria-live="polite">
+        Slide {i + 1} of {n}: {slides[i]?.lines.join(" ")}
+      </p>
+
+      <div className="absolute left-20 top-1/2 z-10 hidden -translate-y-1/2 text-center xl:block 2xl:left-24">
+        <p className="text-2xl font-black uppercase leading-[0.95] tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.55)] 2xl:text-3xl">
+          {date.map((part) => (
+            <span key={part} className="block">
+              {part}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      <div className="absolute right-20 top-1/2 z-10 hidden -translate-y-1/2 xl:block 2xl:right-24">
+        <div className="-rotate-2 bg-white/95 px-5 py-4 text-center shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
+          <p className="text-[0.65rem] font-extrabold uppercase tracking-[0.22em] text-[#b3261e]">
+            Service Time
+          </p>
+          <div className="mt-2 space-y-0.5">
+            {serviceTimes.map((time) => (
+              <p
+                key={time}
+                className="text-xl font-black tracking-tight text-[#b3261e] 2xl:text-2xl"
+              >
+                {time}
+              </p>
+            ))}
           </div>
         </div>
-      ))}
+      </div>
 
-      <button onClick={() => go(-1)} aria-label="Previous slide" className="absolute left-3 top-1/2 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-deep-foreground/40 text-deep-foreground transition hover:bg-gold hover:text-gold-foreground md:grid">
-        <ChevronLeft />
+      <button
+        onClick={() => go(-1)}
+        aria-label="Previous slide"
+        className={cn(arrowCls, "left-2 sm:left-4")}
+      >
+        <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
       </button>
-      <button onClick={() => go(1)} aria-label="Next slide" className="absolute right-3 top-1/2 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-deep-foreground/40 text-deep-foreground transition hover:bg-gold hover:text-gold-foreground md:grid">
-        <ChevronRight />
+      <button
+        onClick={() => go(1)}
+        aria-label="Next slide"
+        className={cn(arrowCls, "right-2 sm:right-4")}
+      >
+        <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
       </button>
-      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
-        {slides.map((s, idx) => (
-          <button key={s.title} onClick={() => setI(idx)} aria-label={`Go to slide ${idx + 1}`} aria-current={idx === i} className={cn("h-2.5 rounded-full transition-all", idx === i ? "w-8 bg-gold" : "w-2.5 bg-deep-foreground/60")} />
-        ))}
+
+      <div className="absolute inset-x-0 bottom-6 z-20 flex flex-wrap items-center justify-center gap-3 px-4 sm:bottom-8">
+        <button onClick={() => openModal("prayer")} className={ctaCls}>
+          Prayer Request
+        </button>
+        <button onClick={() => openModal("visit")} className={ctaCls}>
+          Plan to Visit
+        </button>
       </div>
     </section>
   );

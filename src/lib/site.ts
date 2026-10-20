@@ -7,10 +7,9 @@ import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
 import church from "@/assets/church.jpg";
-import logo from "@/assets/eagt-logo.png.asset.json";
 
 export const images = {
-  logo: logo.url,
+  logo: "/favicon.png",
   hero: [hero1, hero2, hero3],
   pastor: null as string | null, // REPLACE: pastor photo (import it and set here)
   history: church, // REPLACE: church history photo
