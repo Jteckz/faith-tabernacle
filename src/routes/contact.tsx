@@ -25,14 +25,14 @@ function Contact() {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const d = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+    const d = Object.fromEntries(new FormData(e.currentTarget)) as Partial<Record<"name" | "phone" | "message" | "date" | "email" | "subject", string>>;
     if (!d.name?.trim()) return setError("Please enter your name.");
     if (!/^\S+@\S+\.\S+$/.test(d.email ?? "")) return setError("Please enter a valid email.");
     if (!d.message?.trim()) return setError("Please write a message.");
     setError("");
     setBusy(true);
     try {
-      await submitForm("contact", d);
+      await submitForm("contact", d as Record<string, string>);
       setDone(true);
     } catch {
       setError("Something went wrong. Please try again.");
