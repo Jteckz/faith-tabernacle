@@ -4,11 +4,31 @@ import { church_info, services } from "@/lib/site";
 import { useRequestModal } from "./RequestModal";
 import { cn } from "@/lib/utils";
 
-const slides = [
-  { eyebrow: "Join us this Sunday for our", lines: ["Sunday School", "& Services"] },
-  { eyebrow: "Come expectant this Sunday for", lines: ["Prayers &", "Deliverance"] },
-  { eyebrow: "Lift your voice with us in", lines: ["Praise &", "Worship"] },
-] as const;
+type Slide = {
+  eyebrow: string;
+  lines: [string, string];
+  label: string;
+  graphic?: string;
+};
+
+const slides: Slide[] = [
+  {
+    eyebrow: "Join us this Sunday for our",
+    lines: ["Sunday School", "& Services"],
+    label: "Sunday School & Services",
+    graphic: "/image1-a.svg",
+  },
+  {
+    eyebrow: "Come expectant this Sunday for",
+    lines: ["Prayers &", "Deliverance"],
+    label: "Prayers & Deliverance",
+  },
+  {
+    eyebrow: "Lift your voice with us in",
+    lines: ["Praise &", "Worship"],
+    label: "Praise & Worship",
+  },
+];
 
 function ordinal(n: number) {
   const suffixes = ["th", "st", "nd", "rd"];
@@ -92,7 +112,7 @@ export function HeroCarousel() {
         <div className="relative w-full max-w-6xl text-center">
           {slides.map((s, idx) => (
             <div
-              key={s.lines.join(" ")}
+              key={s.label}
               aria-hidden={idx !== i}
               className={cn(
                 "transition-all duration-700",
@@ -101,39 +121,66 @@ export function HeroCarousel() {
                   : "pointer-events-none absolute inset-0 translate-y-4 opacity-0",
               )}
             >
-              <p className="text-[0.7rem] font-bold uppercase tracking-[0.28em] text-white/80 sm:text-sm sm:tracking-[0.38em]">
-                {s.eyebrow}
-              </p>
-              <h1 className="hero-display mt-4 text-white sm:mt-6">
-                {s.lines.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-              </h1>
-              <div className="mt-6 sm:mt-8">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-white/75 sm:text-xs">
-                  Ministering:
-                </p>
-                <p className="mt-1.5 text-sm font-extrabold uppercase tracking-[0.14em] text-white sm:text-lg">
-                  {church_info.pastor}
-                </p>
-              </div>
-              <p className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white/75 sm:text-[0.7rem] xl:hidden">
-                <span>{date.join(" ")}</span>
-                <span aria-hidden="true">•</span>
-                <span>{serviceTimes.join(" · ")}</span>
-              </p>
+              {s.graphic ? (
+                <>
+                  <h1 className="sr-only">
+                    {s.eyebrow} {s.label}. Ministering: {church_info.pastor}.
+                  </h1>
+                  <div className="flex justify-center">
+                    <img
+                      src={s.graphic}
+                      alt=""
+                      width={2856}
+                      height={1396}
+                      loading="eager"
+                      fetchPriority="high"
+                      className="block w-[118vw] max-w-none select-none object-contain drop-shadow-[0_16px_44px_rgba(0,0,0,0.35)] sm:w-[92vw] sm:max-w-[96rem] lg:max-h-[calc(100svh-17rem)]"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="text-[0.7rem] font-bold uppercase tracking-[0.28em] text-white/80 sm:text-sm sm:tracking-[0.38em]">
+                    {s.eyebrow}
+                  </p>
+                  <h1 className="hero-display mt-4 text-white sm:mt-6">
+                    {s.lines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </h1>
+                  <div className="mt-6 sm:mt-8">
+                    <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-white/75 sm:text-xs">
+                      Ministering:
+                    </p>
+                    <p className="mt-1.5 text-sm font-extrabold uppercase tracking-[0.14em] text-white sm:text-lg">
+                      {church_info.pastor}
+                    </p>
+                  </div>
+                  <p className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white/75 sm:text-[0.7rem] xl:hidden">
+                    <span>{date.join(" ")}</span>
+                    <span aria-hidden="true">•</span>
+                    <span>{serviceTimes.join(" · ")}</span>
+                  </p>
+                </>
+              )}
             </div>
           ))}
         </div>
       </div>
 
       <p className="sr-only" aria-live="polite">
-        Slide {i + 1} of {n}: {slides[i]?.lines.join(" ")}
+        Slide {i + 1} of {n}: {slides[i]?.label}
       </p>
 
-      <div className="absolute left-20 top-1/2 z-10 hidden -translate-y-1/2 text-center xl:block 2xl:left-24">
+      <div
+        aria-hidden={i === 0}
+        className={cn(
+          "absolute left-20 top-1/2 z-10 hidden -translate-y-1/2 text-center transition-opacity duration-500 xl:block 2xl:left-24",
+          i === 0 ? "opacity-0" : "opacity-100",
+        )}
+      >
         <p className="text-2xl font-black uppercase leading-[0.95] tracking-tight text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.55)] 2xl:text-3xl">
           {date.map((part) => (
             <span key={part} className="block">
@@ -143,7 +190,13 @@ export function HeroCarousel() {
         </p>
       </div>
 
-      <div className="absolute right-20 top-1/2 z-10 hidden -translate-y-1/2 xl:block 2xl:right-24">
+      <div
+        aria-hidden={i === 0}
+        className={cn(
+          "absolute right-20 top-1/2 z-10 hidden -translate-y-1/2 transition-opacity duration-500 xl:block 2xl:right-24",
+          i === 0 ? "opacity-0" : "opacity-100",
+        )}
+      >
         <div className="-rotate-2 bg-white/95 px-5 py-4 text-center shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
           <p className="text-[0.65rem] font-extrabold uppercase tracking-[0.22em] text-[#b3261e]">
             Service Time
