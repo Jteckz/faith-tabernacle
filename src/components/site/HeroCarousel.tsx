@@ -16,7 +16,7 @@ const slides: Slide[] = [
     eyebrow: "Join us this Sunday for our",
     lines: ["Sunday School", "& Services"],
     label: "Sunday School & Services",
-    graphic: "/image1-a.svg",
+    graphic: "/image1-c.svg",
   },
   {
     eyebrow: "Come expectant this Sunday for",
