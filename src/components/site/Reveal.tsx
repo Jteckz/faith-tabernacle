@@ -37,7 +37,7 @@ export function SectionTitle({ eyebrow, title, light, center }: { eyebrow?: stri
 
 export function PageBanner({ title, subtitle }: { title: string; subtitle: string }) {
   return (
-    <section className="bg-pattern relative overflow-hidden bg-deep py-20 text-deep-foreground md:py-28">
+    <section className="bg-pattern relative overflow-hidden bg-deep pb-20 pt-28 text-deep-foreground md:pb-28 md:pt-36">
       <div className="mx-auto max-w-6xl px-5 text-center">
         <p className="eyebrow mb-3 text-gold">{subtitle}</p>
         <h1 className="text-5xl font-semibold md:text-6xl">{title}</h1>

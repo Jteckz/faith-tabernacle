@@ -25,7 +25,16 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <span className="rounded-lg bg-background p-1.5"><img src={images.logo} alt="EAGT logo" className="h-12 w-auto" loading="lazy" /></span>
+            <span className="rounded-lg bg-background p-1.5">
+              <img
+                src={images.logo}
+                alt="EAGT logo"
+                width={217}
+                height={217}
+                className="h-12 w-auto"
+                loading="lazy"
+              />
+            </span>
             <span className="font-display text-2xl font-bold">{church_info.short}</span>
           </div>
           <p className="mt-4 text-sm text-deep-foreground/75">{church_info.full}. A family of believers in Sinza, Dar es Salaam.</p>

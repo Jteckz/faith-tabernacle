@@ -16,7 +16,9 @@ const slides: Slide[] = [
     eyebrow: "Join us this Sunday for our",
     lines: ["Sunday School", "& Services"],
     label: "Sunday School & Services",
-    graphic: "/image1-c.svg",
+    // Slide artwork: 3000x1466 lossless WebP master (public/image1-a-1.webp).
+    // The smaller files are lossless downscales of that same master.
+    graphic: "/image1-a-1.webp",
   },
   {
     eyebrow: "Come expectant this Sunday for",
@@ -79,7 +81,7 @@ export function HeroCarousel() {
     <section
       aria-roledescription="carousel"
       aria-label="Church highlights"
-      className="relative h-[calc(100svh-5rem)] min-h-[640px] overflow-hidden bg-deep"
+      className="relative h-[100svh] min-h-[640px] overflow-hidden bg-deep"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -97,10 +99,17 @@ export function HeroCarousel() {
       }}
     >
       <img
-        src="/image1.svg"
+        src="/image1New-1358.webp"
+        // Responsive sources for the full-bleed hero, generated from the supplied
+        // photo (public/image1New.jpeg, 1358x768, kept untouched as the master).
+        // The object-cover crop scales the image by its height on tall screens,
+        // so "sizes" must account for that or the browser would pick a file too
+        // small and upscale it.
+        srcSet="/image1New-480.webp 480w, /image1New-768.webp 768w, /image1New-1080.webp 1080w, /image1New-1358.webp 1358w"
+        sizes="max(100vw, 176.82vh)"
         alt=""
-        width={1199}
-        height={678}
+        width={1358}
+        height={768}
         loading="eager"
         fetchPriority="high"
         className="absolute inset-0 h-full w-full object-cover object-center"
@@ -108,7 +117,7 @@ export function HeroCarousel() {
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/10 to-slate-950/65" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.14),transparent_62%)]" />
 
-      <div className="relative z-10 flex h-full items-center justify-center px-6 pb-32 pt-16 sm:px-10 sm:pb-36">
+      <div className="relative z-10 flex h-full items-center justify-center px-6 pb-32 pt-28 sm:px-10 sm:pb-36 sm:pt-32">
         <div className="relative w-full max-w-6xl text-center">
           {slides.map((s, idx) => (
             <div
@@ -129,9 +138,14 @@ export function HeroCarousel() {
                   <div className="flex justify-center">
                     <img
                       src={s.graphic}
+                      // Responsive sources so the artwork is delivered at the
+                      // resolution it is displayed at: lossless variants of the
+                      // 3000x1466 master, so nothing is ever upscaled.
+                      srcSet="/image1-a-1-640.webp 640w, /image1-a-1-960.webp 960w, /image1-a-1-1280.webp 1280w, /image1-a-1-1920.webp 1920w, /image1-a-1.webp 3000w"
+                      sizes="(min-width: 640px) min(92vw, 1536px), 118vw"
                       alt=""
-                      width={2856}
-                      height={1396}
+                      width={3000}
+                      height={1466}
                       loading="eager"
                       fetchPriority="high"
                       className="block w-[118vw] max-w-none select-none object-contain drop-shadow-[0_16px_44px_rgba(0,0,0,0.35)] sm:w-[92vw] sm:max-w-[96rem] lg:max-h-[calc(100svh-17rem)]"

@@ -52,7 +52,7 @@ function Index() {
       </section>
 
       {/* What we do */}
-      <section className="py-24">
+      <section id="ministries" className="scroll-mt-24 py-24">
         <div className="mx-auto max-w-7xl px-5">
           <Reveal><SectionTitle eyebrow="Ministries" title="What We Do" center /></Reveal>
           <div className="grid gap-8 md:grid-cols-3">
