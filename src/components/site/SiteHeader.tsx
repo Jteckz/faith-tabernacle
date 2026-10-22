@@ -8,17 +8,14 @@ import { cn } from "@/lib/utils";
 /**
  * Reference-style menu (Living Faith Church Worldwide layout).
  * Add new sections here as their routes are created — e.g.
- *   { to: "/media", hash: undefined, exact: false, label: "Media Center" }
+ *   { to: "/media", exact: false, label: "Media Center" }
  */
 const nav = [
-  { to: "/", hash: undefined, exact: true, label: "Home" },
-  { to: "/about", hash: undefined, exact: false, label: "About Us" },
-  { to: "/", hash: "ministries", exact: false, label: "Ministries" },
-  { to: "/contact", hash: undefined, exact: false, label: "Contact Us" },
+  { to: "/", exact: true, label: "Home" },
+  { to: "/about", exact: false, label: "About Us" },
+  { to: "/ministries", exact: false, label: "Ministries" },
+  { to: "/contact", exact: false, label: "Contact Us" },
 ] as const;
-
-/** TanStack's `hash` prop only accepts `true` or an updater, and exactOptionalPropertyTypes forbids `undefined`. */
-const hashProps = (hash: string | undefined) => (hash ? { hash: () => hash } : {});
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -87,10 +84,9 @@ export function SiteHeader() {
               <Link
                 key={n.label}
                 to={n.to}
-                {...hashProps(n.hash)}
                 className={linkCls}
                 activeOptions={{ exact: n.exact }}
-                activeProps={{ className: n.hash ? "" : "text-white after:scale-x-100" }}
+                activeProps={{ className: "text-white after:scale-x-100" }}
               >
                 {n.label}
               </Link>
@@ -148,7 +144,6 @@ export function SiteHeader() {
               <Link
                 key={n.label}
                 to={n.to}
-                {...hashProps(n.hash)}
                 onClick={() => setOpen(false)}
                 className="border-b border-deep-foreground/10 py-3 text-sm font-bold uppercase tracking-[0.16em] text-deep-foreground transition-colors hover:text-gold"
                 activeProps={{ className: "text-gold" }}

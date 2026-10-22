@@ -1,9 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, Flame, Music, Clock, ArrowRight } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Clock } from "lucide-react";
 import { HeroCarousel } from "@/components/site/HeroCarousel";
 import { Reveal, SectionTitle } from "@/components/site/Reveal";
 import { useRequestModal } from "@/components/site/RequestModal";
-import { images, services } from "@/lib/site";
+import { services } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,12 +16,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const work = [
-  { Icon: BookOpen, title: "Sunday School & Services", text: "Bible teaching for every age and Spirit-filled Sunday services for the whole family.", img: images.hero[0], to: "/about" as const },
-  { Icon: Flame, title: "Prayers & Deliverance", text: "Dedicated times of intercession where we stand together for healing and freedom.", img: images.hero[1], to: "/contact" as const },
-  { Icon: Music, title: "Praise & Worship", text: "Joyful worship led by our choir and praise team — come and lift your voice.", img: images.hero[2], to: "/contact" as const },
-];
 
 function Index() {
   const openModal = useRequestModal();
@@ -48,31 +42,6 @@ function Index() {
               </div>
             ))}
           </Reveal>
-        </div>
-      </section>
-
-      {/* What we do */}
-      <section id="ministries" className="scroll-mt-24 py-24">
-        <div className="mx-auto max-w-7xl px-5">
-          <Reveal><SectionTitle eyebrow="Ministries" title="What We Do" center /></Reveal>
-          <div className="grid gap-8 md:grid-cols-3">
-            {work.map(({ Icon, title, text, img, to }) => (
-              <Reveal key={title}>
-                <Link to={to} className="group block h-full overflow-hidden rounded-2xl bg-card shadow-soft transition hover:-translate-y-1.5 hover:shadow-lift">
-                  <div className="relative h-56 overflow-hidden">
-                    <img src={img} alt={title} loading="lazy" className="hero-img h-full w-full object-cover object-right transition duration-700 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-deep/70 to-transparent" />
-                    <span className="absolute bottom-4 left-4 grid h-12 w-12 place-items-center rounded-full bg-gold text-gold-foreground"><Icon className="h-5 w-5" /></span>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-2xl font-semibold text-deep">{title}</h3>
-                    <p className="mt-2 text-muted-foreground">{text}</p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:text-burgundy">Learn more <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
