@@ -75,26 +75,55 @@
   --input: oklch(0.88 0.012 90);
   --ring: var(--gold);
 
-  --overlay-hero: linear-gradient(90deg, color-mix(in oklab, var(--deep) 88%, transparent) 0%, color-mix(in oklab, var(--deep) 60%, transparent) 45%, transparent 80%),
-    radial-gradient(circle at 100% 0%, color-mix(in oklab, var(--gold) 14%, transparent), transparent 45%);
+  --overlay-hero:
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--deep) 88%, transparent) 0%,
+      color-mix(in oklab, var(--deep) 60%, transparent) 45%,
+      transparent 80%
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in oklab, var(--gold) 14%, transparent),
+      transparent 45%
+    );
   --shadow-soft: 0 10px 30px -12px color-mix(in oklab, var(--deep) 30%, transparent);
   --shadow-lift: 0 22px 40px -16px color-mix(in oklab, var(--deep) 40%, transparent);
   --pattern-cross: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M22 12h4v8h8v4h-8v12h-4V24h-8v-4h8z' fill='%23E5BE36' fill-opacity='0.08'/%3E%3C/svg%3E");
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
-  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+  }
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -106,13 +135,27 @@
   box-shadow: var(--shadow-soft);
   object-fit: cover;
 }
-@utility hero-img { filter: saturate(1.05) contrast(1.05) sepia(0.06); }
-@utility hero-overlay { background: var(--overlay-hero); }
-@utility bg-pattern { background-image: var(--pattern-cross); }
-@utility shadow-soft { box-shadow: var(--shadow-soft); }
-@utility shadow-lift { box-shadow: var(--shadow-lift); }
+@utility hero-img {
+  filter: saturate(1.05) contrast(1.05) sepia(0.06);
+}
+@utility hero-overlay {
+  background: var(--overlay-hero);
+}
+@utility bg-pattern {
+  background-image: var(--pattern-cross);
+}
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+@utility shadow-lift {
+  box-shadow: var(--shadow-lift);
+}
 @utility gold-rule {
-  display: block; width: 3.5rem; height: 3px; border-radius: 2px; background: var(--gold);
+  display: block;
+  width: 3.5rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gold);
 }
 @utility hero-display {
   font-family: var(--font-hero);
@@ -121,14 +164,53 @@
   line-height: 0.86;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  text-shadow: 0 0 18px rgb(255 255 255 / 0.4), 0 16px 48px rgb(0 0 0 / 0.45);
+  text-shadow:
+    0 0 18px rgb(255 255 255 / 0.4),
+    0 16px 48px rgb(0 0 0 / 0.45);
   filter: drop-shadow(0 0 26px rgb(255 255 255 / 0.22));
 }
 @utility eyebrow {
-  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 /* Scroll reveal */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.reveal.is-visible { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tab panel entrance (About page switcher) */
+.panel-in {
+  animation: panel-in 0.4s ease-out both;
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-in {
+    animation: none;
+  }
+}

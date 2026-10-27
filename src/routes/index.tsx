@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Clock } from "lucide-react";
-import { HeroCarousel } from "@/components/site/HeroCarousel";
+import { HeroVideo } from "@/components/site/HeroVideo";
 import { Reveal, SectionTitle } from "@/components/site/Reveal";
 import { useRequestModal } from "@/components/site/RequestModal";
 import { services } from "@/lib/site";
@@ -21,7 +21,7 @@ function Index() {
   const openModal = useRequestModal();
   return (
     <>
-      <HeroCarousel />
+      <HeroVideo />
 
       {/* Welcome strip + service times */}
       <section className="bg-cream py-20">
