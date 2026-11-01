@@ -20,6 +20,13 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Vercel build output
+.vercel/
+
+# 93MB HEVC master — the site serves heroVideo-web.mp4 instead.
+# A copy is kept outside the repo (../faith-tabernacle-media/).
+public/heroVideo.mp4
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

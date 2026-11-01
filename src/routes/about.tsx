@@ -72,7 +72,7 @@ function About() {
 
   return (
     <>
-      <PageBanner title="About Us" subtitle="Our Story" />
+      <PageBanner title="About Us" subtitle="Our Story" background="/about.jpg" />
 
       <section className="bg-cream py-16 md:py-24">
         <Reveal className="mx-auto max-w-6xl px-5">
