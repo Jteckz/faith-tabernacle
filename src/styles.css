@@ -41,6 +41,12 @@
   --color-burgundy: var(--burgundy);
   --color-burgundy-foreground: var(--burgundy-foreground);
   --color-cream: var(--cream);
+  /* Exact hero brand colours (per brief) */
+  --color-brand-green: #176b3a;
+  --color-brand-deep: #104b2b;
+  --color-brand-burgundy: #702626;
+  --color-brand-gold: #e5be36;
+  --font-brand-serif: "Fraunces", "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 :root {
@@ -212,5 +218,42 @@
 @media (prefers-reduced-motion: reduce) {
   .panel-in {
     animation: none;
+  }
+}
+
+/* Home hero: staggered rise + very slow zoom on the backdrop */
+.hero-rise {
+  opacity: 0;
+  animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-zoom {
+  animation: hero-zoom 28s ease-in-out infinite alternate;
+}
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    opacity: 1;
+    animation: none;
+  }
+  .hero-zoom {
+    animation: none;
+    transform: none;
   }
 }

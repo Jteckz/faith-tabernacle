@@ -29,11 +29,26 @@ export const church_info = {
   socials: { facebook: "#", instagram: "#", youtube: "#" }, // REPLACE: social links
 };
 
-// REPLACE: service times
+// REPLACE: service times (short = label used in the Home hero times bar)
 export const services = [
-  { name: "Sunday School", day: "Sunday", time: "8:00 AM – 9:00 AM" },
-  { name: "Sunday Service", day: "Sunday", time: "9:30 AM – 12:30 PM" },
-  { name: "Midweek Prayer", day: "Wednesday", time: "5:30 PM – 7:30 PM" },
+  {
+    name: "Sunday School",
+    day: "Sunday",
+    time: "8:00 AM – 9:00 AM",
+    short: "Sunday School 8:00 AM",
+  },
+  {
+    name: "Sunday Service",
+    day: "Sunday",
+    time: "9:30 AM – 12:30 PM",
+    short: "Sunday Service 9:30 AM",
+  },
+  {
+    name: "Midweek Prayer",
+    day: "Wednesday",
+    time: "5:30 PM – 7:30 PM",
+    short: "Wednesday Prayer 5:30 PM",
+  },
 ];
 
 /** Plug a real form endpoint here (e.g. Formspree URL). Empty = demo mode. */
