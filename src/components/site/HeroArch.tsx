@@ -10,27 +10,9 @@
  */
 import { Clock } from "lucide-react";
 import { CalmVideo, HERO_POSTER } from "./CalmVideo";
+import { KangaPattern } from "./KangaPattern";
 import { useRequestModal } from "./RequestModal";
 import { services } from "@/lib/site";
-
-/** Faint kanga/kitenge-style geometric tile (gold linework, shown at 7%). */
-function KangaPattern() {
-  return (
-    <svg aria-hidden="true" className="absolute inset-0 h-full w-full opacity-[0.07]">
-      <defs>
-        <pattern id="kanga-tile" width="132" height="132" patternUnits="userSpaceOnUse">
-          <g fill="none" stroke="#E5BE36" strokeWidth="2">
-            <rect x="4" y="4" width="124" height="124" strokeDasharray="7 9" />
-            <path d="M66 16 116 66 66 116 16 66Z" />
-            <path d="M66 40 92 66 66 92 40 66Z" />
-            <circle cx="66" cy="66" r="6" fill="#E5BE36" stroke="none" />
-          </g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#kanga-tile)" />
-    </svg>
-  );
-}
 
 export function HeroArch() {
   const openModal = useRequestModal();

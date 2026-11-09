@@ -47,6 +47,7 @@
   --color-brand-burgundy: #702626;
   --color-brand-gold: #e5be36;
   --font-brand-serif: "Fraunces", "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-brand-script: "Caveat", "Segoe Script", cursive;
 }
 
 :root {
