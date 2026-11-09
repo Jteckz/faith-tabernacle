@@ -3,7 +3,6 @@ import { Hero } from "@/components/site/Hero";
 import { KangaPattern } from "@/components/site/KangaPattern";
 import { Reveal } from "@/components/site/Reveal";
 import { useRequestModal } from "@/components/site/RequestModal";
-import { images } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -57,24 +56,24 @@ function Index() {
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
           <Reveal className="relative mx-auto w-full max-w-[400px] sm:max-w-[440px] lg:max-w-[460px]">
             <div className="relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-3xl ring-2 ring-brand-gold/70">
-              {/* REPLACE: welcome photo (arch) — currently images.hero[0] in src/lib/site.ts; point src at your own photo */}
+              {/* Photo: /public/belowvideo1.jpg — swap the file (same name) to replace it */}
               <img
-                src={images.hero[0]}
-                alt="A family smiling during Sunday service at EAGT Sinza"
+                src="/belowvideo1.jpg"
+                alt="The congregation gathered in the pews during a Sunday service at EAGT Sinza"
                 loading="lazy"
-                width={1920}
-                height={966}
-                className="h-full w-full object-cover object-[72%_38%]"
+                width={3600}
+                height={2359}
+                className="h-full w-full object-cover object-[45%_center]"
               />
             </div>
             <div className="absolute -bottom-9 -right-2 w-[46%] rotate-3 bg-white p-1.5 shadow-soft sm:-right-6">
-              {/* REPLACE: welcome photo (small print) — currently images.hero[1] in src/lib/site.ts */}
+              {/* Photo: /public/belowvideo2.jpg — swap the file (same name) to replace it */}
               <img
-                src={images.hero[1]}
-                alt="Members lifting their hands in prayer"
+                src="/belowvideo2.jpg"
+                alt="A woman kneeling in prayer with her hands lifted"
                 loading="lazy"
-                width={1920}
-                height={966}
+                width={3600}
+                height={2673}
                 className="aspect-[4/3] w-full object-cover"
               />
             </div>
