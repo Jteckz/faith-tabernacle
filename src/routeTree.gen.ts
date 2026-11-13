@@ -10,13 +10,33 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CWIRouteImport } from './routes/CWI'
+import { Route as WHIRouteImport } from './routes/WHI'
+import { Route as WWIRouteImport } from './routes/WWI'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as MinistriesRouteImport } from './routes/ministries'
+import { Route as MinistriesIndexRouteImport } from './routes/ministries.index'
+import { Route as MinistriesPChar38wRouteImport } from './routes/ministries/p&w'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CWIRoute = CWIRouteImport.update({
+  id: '/CWI',
+  path: '/CWI',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WHIRoute = WHIRouteImport.update({
+  id: '/WHI',
+  path: '/WHI',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WWIRoute = WWIRouteImport.update({
+  id: '/WWI',
+  path: '/WWI',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -34,39 +54,93 @@ const MinistriesRoute = MinistriesRouteImport.update({
   path: '/ministries',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MinistriesIndexRoute = MinistriesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MinistriesRoute,
+} as any)
+const MinistriesPChar38wRoute = MinistriesPChar38wRouteImport.update({
+  id: '/p&w',
+  path: '/p&w',
+  getParentRoute: () => MinistriesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/CWI': typeof CWIRoute
+  '/WHI': typeof WHIRoute
+  '/WWI': typeof WWIRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/ministries': typeof MinistriesRoute
+  '/ministries': typeof MinistriesRouteWithChildren
+  '/ministries/p&w': typeof MinistriesPChar38wRoute
+  '/ministries/': typeof MinistriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/CWI': typeof CWIRoute
+  '/WHI': typeof WHIRoute
+  '/WWI': typeof WWIRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/ministries': typeof MinistriesRoute
+  '/ministries/p&w': typeof MinistriesPChar38wRoute
+  '/ministries': typeof MinistriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/CWI': typeof CWIRoute
+  '/WHI': typeof WHIRoute
+  '/WWI': typeof WWIRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/ministries': typeof MinistriesRoute
+  '/ministries': typeof MinistriesRouteWithChildren
+  '/ministries/p&w': typeof MinistriesPChar38wRoute
+  '/ministries/': typeof MinistriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/ministries'
+  fullPaths:
+    | '/'
+    | '/CWI'
+    | '/WHI'
+    | '/WWI'
+    | '/about'
+    | '/contact'
+    | '/ministries'
+    | '/ministries/p&w'
+    | '/ministries/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/ministries'
-  id: '__root__' | '/' | '/about' | '/contact' | '/ministries'
+  to:
+    | '/'
+    | '/CWI'
+    | '/WHI'
+    | '/WWI'
+    | '/about'
+    | '/contact'
+    | '/ministries/p&w'
+    | '/ministries'
+  id:
+    | '__root__'
+    | '/'
+    | '/CWI'
+    | '/WHI'
+    | '/WWI'
+    | '/about'
+    | '/contact'
+    | '/ministries'
+    | '/ministries/p&w'
+    | '/ministries/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CWIRoute: typeof CWIRoute
+  WHIRoute: typeof WHIRoute
+  WWIRoute: typeof WWIRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  MinistriesRoute: typeof MinistriesRoute
+  MinistriesRoute: typeof MinistriesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -76,6 +150,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/CWI': {
+      id: '/CWI'
+      path: '/CWI'
+      fullPath: '/CWI'
+      preLoaderRoute: typeof CWIRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/WHI': {
+      id: '/WHI'
+      path: '/WHI'
+      fullPath: '/WHI'
+      preLoaderRoute: typeof WHIRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/WWI': {
+      id: '/WWI'
+      path: '/WWI'
+      fullPath: '/WWI'
+      preLoaderRoute: typeof WWIRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -99,14 +194,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinistriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ministries/': {
+      id: '/ministries/'
+      path: '/'
+      fullPath: '/ministries/'
+      preLoaderRoute: typeof MinistriesIndexRouteImport
+      parentRoute: typeof MinistriesRoute
+    }
+    '/ministries/p&w': {
+      id: '/ministries/p&w'
+      path: '/p&w'
+      fullPath: '/ministries/p&w'
+      preLoaderRoute: typeof MinistriesPChar38wRouteImport
+      parentRoute: typeof MinistriesRoute
+    }
   }
 }
 
+interface MinistriesRouteChildren {
+  MinistriesPChar38wRoute: typeof MinistriesPChar38wRoute
+  MinistriesIndexRoute: typeof MinistriesIndexRoute
+}
+
+const MinistriesRouteChildren: MinistriesRouteChildren = {
+  MinistriesPChar38wRoute: MinistriesPChar38wRoute,
+  MinistriesIndexRoute: MinistriesIndexRoute,
+}
+
+const MinistriesRouteWithChildren = MinistriesRoute._addFileChildren(
+  MinistriesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CWIRoute: CWIRoute,
+  WHIRoute: WHIRoute,
+  WWIRoute: WWIRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  MinistriesRoute: MinistriesRoute,
+  MinistriesRoute: MinistriesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
